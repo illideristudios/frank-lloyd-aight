@@ -1,7 +1,7 @@
 {
   "fixture_base": "repo",
   "tz": "America/Chicago",
-  "description": "The same brief as a-package-is-a-table, with the sentence that case had first: Robin asks to start with how the PDF gets produced. That has two honest readings, which package writes it and where it is written, so either row may be the one asked. Whichever it is, the page carries the package table, the package row is open with no package proposed (the run has no network), and the ask fits the row: `Which row for <id>?` with the table in the reply for the package row, `Do you approve <id>?` for any other, never both.",
+  "description": "The same brief as a-package-is-a-table, with the sentence that case had first: Robin asks to start with how the PDF gets produced. That has two honest readings, which package writes it and where it is written, so either row may be the one asked. Whichever it is, the page carries the package table, the package row is open with no package proposed (the run has no network), and the ask is `Which option for <id>?` for either: the package table in the reply for the package row, three or four options with one recommended for any other, never a yes or no.",
   "prompt": "We are planning the architecture for the export feature. The brief is docs/export-brief.md. This is a planning session. Start with how the PDF gets produced: that is the first thing I want to decide.",
   "peers": "sessions.json",
   "graders": [
@@ -91,32 +91,33 @@
     {
       "name": "the last line asks the row named as the next decision",
       "type": "regex",
-      "pattern": "(?s)Next decision:?\\**\\s*\\**`?(?P<id>[A-Z]+\\d+)`?.*(?:Which row for|Do you approve) \\W*(?P=id)\\W*\\?\\W*\\Z"
+      "pattern": "(?s)Next decision:?\\**\\s*\\**`?(?P<id>[A-Z]+\\d+)`?.*Which option for \\W*(?P=id)\\W*\\?\\W*\\Z"
     },
     {
-      "name": "the reply does not ask both ways",
+      "name": "the reply asks no yes or no",
       "type": "regex",
-      "pattern": "(?s)\\A(?!.*Which row for.*Do you approve)(?!.*Do you approve.*Which row for)"
+      "pattern": "Do you approve",
+      "match": "absent"
     },
     {
-      "name": "which row is asked only with the table in the reply",
+      "name": "the reply lays the options out as a table",
       "type": "regex",
-      "pattern": "(?s)\\A(?:(?!Which row for).)*\\Z|\\|\\s*Package\\s*\\|\\s*Purpose here\\s*\\|"
+      "pattern": "\\|\\s*Package\\s*\\|\\s*Purpose here\\s*\\||(?i:^[ \\t]*\\|[ \\t]*\\**option\\**[ \\t]*\\|)"
     },
     {
-      "name": "a decision about a package is not asked as a yes or no",
+      "name": "the reply offers three or four options, or the candidates, or says why fewer",
       "type": "regex",
-      "pattern": "(?s)\\A(?!.*Next decision[^\\n]*(?i:package|library|tool)[^\\n]*\\n.*Do you approve)"
+      "pattern": "\\|\\s*Package\\s*\\|\\s*Purpose here\\s*\\||(?:^[ \\t]*\\|[ \\t]*\\**Option\\**[ \\t]*\\|[^\\n]*\\n[ \\t]*\\|[ \\t:|-]+\\|[ \\t]*\\n(?:[ \\t]*\\|[^\\n]*\\|[ \\t]*\\n){3,4}(?![ \\t]*\\n?[ \\t]*\\|))|(?i:\\bonly (?:one|two) real options?\\b)"
     },
     {
-      "name": "with no network, a which-row reply proposes and recommends no package",
+      "name": "with no network, a reply that asks the package row proposes and recommends no package",
       "type": "regex",
-      "pattern": "(?sm)\\A(?:(?!Which row for).)*\\Z|The proposal\\.\\W*No package is proposed.*^\\W*Recommend:\\W*no row\\b"
+      "pattern": "(?sm)\\A(?:(?!\\|\\s*Package\\s*\\|\\s*Purpose here\\s*\\|).)*\\Z|The options\\.\\W*No package is proposed.*^\\W*Recommend:\\W*no option\\b"
     },
     {
-      "name": "an approval reply recommends settling the row first",
+      "name": "the recommendation names an option or no option, never an order of settling",
       "type": "regex",
-      "pattern": "(?sm)\\A(?:(?!Do you approve).)*\\Z|^\\W*Recommend:\\W*settle\\b"
+      "pattern": "(?m)^\\W*Recommend:\\W*(?!settle\\b)\\S[^\\n]*\\bbecause\\b"
     }
   ],
   "max_turns": 40,
