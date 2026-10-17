@@ -1,7 +1,7 @@
 {
   "fixture_base": "repo",
   "tz": "America/Chicago",
-  "description": "Robin opens a planning session with a brief. The first reply puts the plan page up: an HTML file in the plan dir (the block names no pages dir), in the fixed theme and section numbers, the architecture as real structure, every choice a row marked proposed with its basis, nothing shown as decided, and no question asked before the page exists.",
+  "description": "Robin opens a planning session with a brief. The first reply puts the plan page up: an HTML file in the plan dir (the block names no pages dir), in the fixed theme and section numbers, the architecture as real structure, every choice a row marked proposed with its options and the recommended one, nothing shown as decided, and no question asked before the page exists. The decision asked is three or four real options (fewer only when fewer exist, and the page and reply say so), one marked recommended, then `Recommend: <option>, because <reason>.`, then `Which option for <id>?` as the last line; never a yes or no on one proposal.",
   "prompt": "We are planning the architecture for the export feature. The brief is docs/export-brief.md. This is a planning session.",
   "peers": "sessions.json",
   "graders": [
@@ -31,7 +31,9 @@
         "class=\"pill open\">proposed<",
         "<th>Basis</th>",
         "Read in ",
-        "Not read"
+        "Not read",
+        "<th>Options</th>",
+        "<th>Recommended</th>"
       ],
       "content_not_match": [
         "class=\"pill done\">decided<"
@@ -85,9 +87,9 @@
       "content_match": [
         "<section id=\"next\" class=\"next\">\\s*<h2>Next decision: [A-Z]+\\d+, \\S",
         "<b>The problem\\.</b>",
-        "<b>The proposal\\.</b>",
-        "<b>What it costs\\.</b>",
-        "<b>Basis\\.</b>",
+        "<b>The options\\.</b>",
+        "(?s)<section id=\"next\" class=\"next\">(?:(?!</section>).)*<th>Option</th>(?:(?!</section>).)*<th>What it costs</th>(?:(?!</section>).)*<th>Basis</th>",
+        "(?s)<section id=\"next\" class=\"next\">(?:(?!</section>).)*class=\"pill open\">recommended<",
         "<h3>Waiting behind it</h3>",
         "<th>The question</th>",
         "<b>What it does not decide\\.</b>",
@@ -98,9 +100,37 @@
       ]
     },
     {
+      "name": "the page's next decision offers three or four options, or says why fewer",
+      "type": "published",
+      "content_match": [
+        "(?s)<table class=\"options\">(?:(?!</table>).)*?<tbody>(?:\\s*<tr[^>]*>(?:(?!</tr>).)*</tr>){3,4}\\s*</tbody>|(?i:\\bonly (?:one|two) real options?\\b)"
+      ]
+    },
+    {
       "name": "reply restates the one pending decision in full and ends on the ask",
       "type": "regex",
-      "pattern": "(?s)\\A(?!.*Do you approve.*Do you approve).*Next decision:?\\**\\s*\\**`?(?P<id>[A-Z]+\\d+)`?\\**,? .*The problem.*The proposal.*Do you approve \\W*(?P=id)\\W*\\?\\W*\\Z"
+      "pattern": "(?s)\\A(?!.*Which option for.*Which option for).*Next decision:?\\**\\s*\\**`?(?P<id>[A-Z]+\\d+)`?\\**,? .*The problem.*The options.*Which option for \\W*(?P=id)\\W*\\?\\W*\\Z"
+    },
+    {
+      "name": "the reply lays the options out as a table, one marked recommended",
+      "type": "regex",
+      "pattern": "(?s)(?i:^[ \\t]*\\|[ \\t]*\\**option\\**[ \\t]*\\|).*^[ \\t]*\\|[^\\n]*\\b[Rr]ecommended\\b"
+    },
+    {
+      "name": "the reply offers three or four options, or says why fewer",
+      "type": "regex",
+      "pattern": "(?:^[ \\t]*\\|[ \\t]*\\**Option\\**[ \\t]*\\|[^\\n]*\\n[ \\t]*\\|[ \\t:|-]+\\|[ \\t]*\\n(?:[ \\t]*\\|[^\\n]*\\|[ \\t]*\\n){3,4}(?![ \\t]*\\n?[ \\t]*\\|))|(?i:\\bonly (?:one|two) real options?\\b)"
+    },
+    {
+      "name": "the recommendation names an option and a reason, not an order of settling",
+      "type": "regex",
+      "pattern": "(?m)^\\W*Recommend:\\W*(?!settle\\b)\\S[^\\n]*\\bbecause\\b"
+    },
+    {
+      "name": "the reply asks no yes or no",
+      "type": "regex",
+      "pattern": "Do you approve",
+      "match": "absent"
     },
     {
       "name": "canonical document untouched",
