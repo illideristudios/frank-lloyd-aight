@@ -54,9 +54,16 @@ The first thing under the header, before section 1, and it has no number. It hol
 <section id="next" class="next">
   <h2>Next decision: K1, the question in plain words</h2>
   <p><b>The problem.</b> What is unsettled and why it has to be settled now, in two or three sentences, with no id standing in for an explanation.</p>
-  <p><b>The proposal.</b> One proposal. When it has parts, a table follows this paragraph.</p>
-  <p><b>What it costs.</b> What the proposal gives up or makes harder.</p>
-  <p><b>Basis.</b> Read in SOURCE. Not read: WHAT.</p>
+  <p><b>The options.</b> One sentence on what the options choose between.</p>
+  <div class="scroll"><table class="options">
+    <thead><tr><th>Option</th><th>What it does</th><th>What it costs</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td>A. NAME <span class="pill open">recommended</span></td><td>What it does here.</td><td>What it gives up or makes harder.</td><td>Read in SOURCE. Not read: WHAT.</td></tr>
+      <tr><td>B. NAME</td><td>What it does here.</td><td>What it gives up or makes harder.</td><td>My reasoning.</td></tr>
+      <tr><td>C. NAME</td><td>What it does here.</td><td>What it gives up or makes harder.</td><td>Read in SOURCE.</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Recommend.</b> A, because the fact read or the decided row it rests on.</p>
   <p><b>What it does not decide.</b> The neighbouring questions this answer leaves open.</p>
   <h3>Waiting behind it</h3>
   <div class="scroll"><table>
@@ -66,9 +73,10 @@ The first thing under the header, before section 1, and it has no number. It hol
 </section>
 ```
 
-- **One decision.** One row's id in the heading and one proposal in the body. Several changes are never put under one id: each change the user could accept or refuse on its own is its own row, and the others wait behind this one.
+- **One decision.** One row's id in the heading and that row's options in the body. Several changes are never put under one id: each change the user could accept or refuse on its own is its own row, and the others wait behind this one.
+- **Three or four options, one recommended.** Each option is a real alternative a reasonable architect could choose, never a strawman added to make up the number, lettered A to D, with what it does, what it costs, and its basis in the row format's Basis form. Exactly one carries the `recommended` pill, and the Recommend paragraph names it with a reason tied to a fact read or a decided row. When fewer than three real options exist, the options paragraph says so in one sentence, `Only two real options exist, because <why>.`, and the table lists those; an option is never invented to fill the count. A package row's options are its candidates, in the package table (see A package), in place of this table.
 - **No status.** The section is not a report of what has been decided, and no row is named by its id alone. A decided row this decision rests on is named with what it decided, in a clause.
-- **Checked first.** Before a proposal goes here it is checked against the Decided table and against what the brief asks for and rules out. A proposal that contradicts either is not made.
+- **Checked first.** Before an option goes here it is checked against the Decided table and against what the brief asks for and rules out. An option that contradicts either is not offered.
 - **Waiting behind it** lists the other open rows in the order they should be settled, each as a full-sentence question. When nothing else is open, the table is replaced by one sentence saying so.
 - When no row is open, the section says that nothing waits on the user.
 
@@ -82,7 +90,7 @@ Every numbered section is `<section id="sN">` with `<h2>N. Title</h2>` on the li
 | 2 | Open | The rows waiting on the user, in the order they should be settled, in the row format below. |
 | 3 | Structure | The architecture as proposed, as real structure: the folder tree in a `pre`, each module or class with its fields and functions, and the signature at each boundary with parameters and types. What exists today is marked as existing with its file and line; what the plan adds is marked as new. A diagram goes here when the renderer produced one. |
 | 4 | What the brief asks for | A table: Requirement (the brief's own id or a short quote of the brief), Where the plan meets it (a section or row id), Status. A requirement the plan does not yet meet says so. |
-| 5 | Files | What was read to build the page, each with its path; what was not read; the plan document; the research file holding the alternatives that were read and rejected. |
+| 5 | Files | What was read to build the page, each with its path; what was not read; the plan document; the research file holding each open row's options in full and the alternatives that were read and rejected. |
 
 Anything with two or more attributes is a table inside `<div class="scroll">`, and prose stays short. A rule with conditions is a small `pre` formula beside one plain sentence, never symbols alone.
 
@@ -90,27 +98,27 @@ Anything with two or more attributes is a table inside `<div class="scroll">`, a
 
 ```html
 <div class="scroll"><table>
-  <tr><th>ID</th><th>Topic</th><th>Proposal</th><th>Basis</th><th>Status</th></tr>
-  <tr><td class="id">K1</td><td>Topic</td><td>One proposal, in a sentence or two.</td><td>Read in <code>src/app/queue.py:13</code>. Not read: the broker's own documentation.</td><td><span class="pill open">proposed</span></td></tr>
+  <tr><th>ID</th><th>Topic</th><th>Options</th><th>Recommended</th><th>Basis</th><th>Status</th></tr>
+  <tr><td class="id">K1</td><td>Topic</td><td>A. Append-only log · B. Table in the store · C. Broker retention</td><td>A, because the queue already appends in order.</td><td>Read in <code>src/app/queue.py:13</code>. Not read: the broker's own documentation.</td><td><span class="pill open">proposed</span></td></tr>
 </table></div>
 ```
 
 - **ID:** one or two capital letters for the row's subject and a number (`D1`, `K7`, `M3`). An id is never reused and never renumbered, and a row keeps its id when it moves from Open to Decided.
-- **One proposal per row,** not a menu. Alternatives that were read and rejected go in the research file named in section 5. The one exception is a row that proposes a package (see A package): its alternatives are on the page, in its table.
-- **Basis:** `Read in <source>` with the file and line, document section or page that was read, or `My reasoning` when it rests on no source. Add `Not read: <what>` wherever a gap remains. A row is proposed only from what was read; a third-party page is named as one.
+- **Options, not one proposal.** The Options cell names the row's three or four options by letter in a few words each, or the fewer that exist with the one-sentence reason; the Recommended cell names the recommended one and its reason in a sentence. What each option does and costs, and its own basis, are written out in the Next decision section when the row is asked, and in the research file named in section 5 until then, so the Open table stays one line of facts per row. A package row's Options cell names its candidates, which are in its table (see A package).
+- **Basis:** `Read in <source>` with the file and line, document section or page that was read, or `My reasoning` when it rests on no source. Add `Not read: <what>` wherever a gap remains. An option is recommended only from what was read; a third-party page is named as one.
 - **Status,** the pill in the last column:
 
 | Pill | Class | Meaning |
 |---|---|---|
-| proposed | `pill open` | Frank's proposal, waiting on the user. It stays proposed until the user answers; Frank's own verdict never moves it. |
-| open | `pill open` | A question with no proposal yet, and what is missing to make one. |
+| proposed | `pill open` | Frank's options and recommendation, waiting on the user. It stays proposed until the user answers; Frank's own verdict never moves it. |
+| open | `pill open` | A question with no recommendation yet, and what is missing to make one. |
 | under review | `pill open` | The user or a reviewer is looking at it. |
 | decided | `pill done` | The user answered. |
 | follows | `pill done` | Forced by a decided row, which it names. Never shown as a decision and never asked. |
 
 ## A package
 
-A row that proposes adopting a package, library or external tool is never a yes or no on one name. The page carries one table of the candidates from the moment the row exists, in section 2 directly under the Open table, and again in the Next decision section when that row is the one being asked. A row that only says a package will be chosen later, with no table, is not written, and neither is "the table follows once another row is settled": when nothing about the candidates was read, the table still goes up, with their names and `not read` in the cells. The table holds the proposed package first, then every real alternative, one row each. A package is proposed only from facts that were read about it: when none were, the row's status is `open`, its Proposal cell says `No package is proposed: no candidate was read`, and the table's rows are in no order of preference. Writing it by hand is an alternative only when that is a real option, and it is its own row with dashes for the facts that do not apply.
+A row about adopting a package, library or external tool is never a yes or no on one name: its candidates are its options. The page carries one table of the candidates from the moment the row exists, in section 2 directly under the Open table, and again in the Next decision section when that row is the one being asked. A row that only says a package will be chosen later, with no table, is not written, and neither is "the table follows once another row is settled": when nothing about the candidates was read, the table still goes up, with their names and `not read` in the cells. The table holds the recommended package first, its Package cell carrying the `recommended` pill, then every real alternative, one row each. A package is recommended only from facts that were read about it: when none were, the row's status is `open`, its Recommended cell says `No package is proposed: no candidate was read`, and the table's rows are in no order of preference. Writing it by hand is an alternative only when that is a real option, and it is its own row with dashes for the facts that do not apply.
 
 ```html
 <div class="scroll"><table class="pkg">
@@ -124,7 +132,7 @@ A row that proposes adopting a package, library or external tool is never a yes 
 - **Every cell is a fact that was read,** from the registry or the repository, or the words `not read`. Never an estimate, a rounding with `~` or `+`, or a figure from memory. The only dashes are in a by-hand row, where a fact does not apply. What a package can do is a fact too: the Purpose cell says what the plan needs from it, and claims about a package that was not read are left out.
 - **Age** is the date of the first release. When the repository is older or younger than that, the cell gives both.
 - **A repository that holds several packages:** counts that are for the whole repository say `repo-wide` in the cell.
-- **The question asked** is which row, not whether. When this row is the Next decision, the table follows `The proposal.` there and in the reply, the `Recommend:` line names the row to take and a read fact for it, or `no row` when no candidate was read, and the reply's last line is `Which row for <id>?` in place of `Do you approve <id>?`. The user's answer is still required before anything is installed or depended on.
+- **The question asked** is which option, not whether. When this row is the Next decision, the table follows `The options.` there and in the reply, the `Recommend:` line names the candidate to take and a read fact for it, or `no option` when no candidate was read, and the reply's last line is `Which option for <id>?`, as for every row. The user's answer is still required before anything is installed or depended on.
 
 ## Diagrams
 
