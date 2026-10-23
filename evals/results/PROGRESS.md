@@ -1326,3 +1326,25 @@ Zach, 2026-10-16 19:34: "recommendations are not supposed to be this way btw. Yo
 Mine, not Zach's: fewer than three real options is said in one line (`Only two real options exist, because <why>.`) and never padded, which is my reading of "3-4"; the Open table shows option names and the recommended one rather than the full options; options are lettered A to D; a package row keeps every real alternative and is not capped at four; and `Recommend: no option` replaces `no row`.
 
 Left: no case reaches the fewer-than-three path, so that sentence is graded only as an alternative; `table.options`, like `table.pkg`, has no rule in the theme and is a marker; the run directories are git-ignored. In run 1 of the green `plan-page-first-reply` the agent still tried a first-turn edit of `docs/ARCHITECTURE.md`, refused by the harness, as recorded at 0.14.0.
+
+## 0.18.0 — the plan page carries an eleven-item checklist (2026-10-23)
+
+Zach, 2026-10-22, brought a fourteen-step architecture list from another workspace: "let's incorporate some of this into the fla workflow". Rulings, 2026-10-23: build order and everything after it out ("let's do A. remove everything after 11"); the list is a checklist, not a sequence ("so these stages should be a checklist, instead of a sequence"; "Every. single. one. is a checklist row. No ordering required. Sometimes architectural decisions drift and need different decision trees. This entire harness is designed to be a multiplier and an optimizer for flows, not a girdle or a straightjacket.").
+
+- **Spec, agent and skill.** `docs/plan-page.md` gains `Where we are`, an unnumbered section between the Next decision and section 1: eleven items (scale and availability, system diagram, core flow, lifecycle, data model, data flows and API contracts, front end, security/privacy/observability, stack and hosting, test layers, configuration/repo layout/known limitations), each with Where (section and row ids, or a dash) and one status pill (`done`, `open`, `not started`, `not applicable` with its reason). It never chooses the next decision and carries no per-item rule. The agent and the skill each point at it in one sentence. The source's ordering words ("before any technology", "chosen only at this point") were dropped.
+- **Dropped before building:** a "next = lowest unfinished step" rule, a "technology waits until step 9" stage (it would have broken `a-package-is-a-table` and `a-package-row-waits-behind`, where the user names the package as the first decision), and a per-item rule for the scale section.
+- **Grader.** `plan-page-first-reply`: the page has the checklist section, its four headers, the eleven items by name, eleven rows each with one of the four statuses, and no item after 11, no build order, no `REVIEW.md`.
+- **Red** on the unchanged agent, Sonnet, one run (20261023-134024): the checklist grader failing, every other grader passing.
+- **Green**, Sonnet, three runs (20261023-135127): 3 of 3. Run 1 marked seven items open, three not started, one not applicable, and still asked E1, where events are kept, so the checklist did not move the decision. Regression, one run each: `a-package-is-a-table` green (20261023-135130), `a-package-row-waits-behind` green (20261023-135344).
+
+```
+i := a checklist item      N := the decision asked next      O := an item's place in the list constrains N
+
+1.  i ∈ 1..11              [Zach, 2026-10-23: "remove everything after 11"]
+2.  ¬O                     [Zach, 2026-10-23: "No ordering required."]
+∴   the checklist records coverage; N is chosen as before
+```
+
+Mine, not Zach's: the item wording (the source's own text was not found in `~/Developer`, so it comes from the screenshot's step titles), the column names, the four statuses, the section's place on the page, and that a dash fills Where when nothing covers an item yet.
+
+Left: the source document's full text was not read. No case reaches `done` or a second turn of the checklist.
