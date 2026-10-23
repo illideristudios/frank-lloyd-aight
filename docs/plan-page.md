@@ -80,9 +80,53 @@ The first thing under the header, before section 1, and it has no number. It hol
 - **Waiting behind it** lists the other open rows in the order they should be settled, each as a full-sentence question. When nothing else is open, the table is replaced by one sentence saying so.
 - When no row is open, the section says that nothing waits on the user.
 
+## Where we are
+
+The checklist: what a plan covers, so that nothing is silently missed. It is a checklist and not a sequence: the items are worked in any order, none waits on another, and none carries a rule of its own. Which decision is asked next is settled the way it always is, by the order the rows should be settled in or by the user's word. It sits directly after the Next decision section, before section 1, and has no number.
+
+```html
+<section id="checklist">
+  <h2>Where we are</h2>
+  <div class="scroll"><table>
+    <tr><th>Item</th><th>What it covers</th><th>Where</th><th>Status</th></tr>
+    <tr><td class="id">1</td><td>Scale and availability: sized levels, the load each is tested at, an availability stance, time targets</td><td>K1</td><td><span class="pill open">open</span></td></tr>
+    <tr><td class="id">2</td><td>System diagram: the modules, their rules, the stubs and the seams</td><td>§3</td><td><span class="pill open">open</span></td></tr>
+  </table></div>
+</section>
+```
+
+The eleven items, always all of them, each row's second cell starting with the item's name as written here:
+
+| Item | What it covers |
+|---|---|
+| 1 | Scale and availability: sized levels, the load each is tested at, an availability stance, time targets |
+| 2 | System diagram: the modules, their rules, the stubs and the seams |
+| 3 | Core flow: the sequence, every place it can break, the guards against running twice, the demo inputs |
+| 4 | Lifecycle: the states a record moves through and what moves it |
+| 5 | Data model: what is kept, its shape, and who owns it |
+| 6 | Data flows and API contracts: what crosses each boundary, and the signature at it |
+| 7 | Front end, with a visual preview |
+| 8 | Security, privacy and observability |
+| 9 | Stack and hosting |
+| 10 | Test layers and check layers |
+| 11 | Configuration, repo layout and known limitations |
+
+- **Where** names the sections and row ids that hold the item's work, or a dash when nothing does yet.
+- **Status** is one pill: `done` (`pill done`) when every row of the item is decided; `not applicable` (`pill done`) when it does not apply to this plan, with the reason in the Where cell, never left out; `open` (`pill open`) when it has rows not yet decided; `not started` (`pill open`) when nothing on the page covers it yet.
+
+```
+i := a checklist item      N := the decision asked next
+A := the page has a row for every item      O := an item's place in the list constrains N
+
+1.  ∀i ∈ 1..11: A                       [Zach, 2026-10-23: "remove everything after 11"]
+2.  ¬O                                  [Zach, 2026-10-23: "Every. single. one. is a checklist row. No ordering required."]
+3.  N := the order rows should be settled in, or the user's word   [this spec, Next decision]
+∴   the checklist shows coverage and never chooses the next decision
+```
+
 ## Sections
 
-Every numbered section is `<section id="sN">` with `<h2>N. Title</h2>` on the line after it. Sections 1 to 5 are fixed. A subject the plan grows (the data model, the deployment, one module in depth) is appended as section 6, 7 and so on, in the order it arrived. A section is never inserted and never renumbered, because the user points at the numbers across turns.
+Every numbered section is `<section id="sN">` with `<h2>N. Title</h2>` on the line after it. Sections 1 to 5 are fixed. A subject the plan grows (an item of the checklist, one module in depth) is appended as section 6, 7 and so on, in the order it arrived. A section is never inserted and never renumbered, because the user points at the numbers across turns.
 
 | # | Title | Body |
 |---|---|---|
