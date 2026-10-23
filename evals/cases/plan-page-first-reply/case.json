@@ -24,6 +24,31 @@
       ]
     },
     {
+      "name": "the page carries the checklist, eleven rows, each with a status",
+      "type": "published",
+      "content_match": [
+        "<section id=\"checklist\">\\s*<h2>Where we are</h2>",
+        "<th>Item</th>\\s*<th>What it covers</th>\\s*<th>Where</th>\\s*<th>Status</th>",
+        "<td class=\"id\">1</td>\\s*<td>Scale and availability",
+        "<td class=\"id\">2</td>\\s*<td>System diagram",
+        "<td class=\"id\">3</td>\\s*<td>Core flow",
+        "<td class=\"id\">4</td>\\s*<td>Lifecycle",
+        "<td class=\"id\">5</td>\\s*<td>Data model",
+        "<td class=\"id\">6</td>\\s*<td>Data flows",
+        "<td class=\"id\">7</td>\\s*<td>Front end",
+        "<td class=\"id\">8</td>\\s*<td>Security",
+        "<td class=\"id\">9</td>\\s*<td>Stack and hosting",
+        "<td class=\"id\">10</td>\\s*<td>Test layers",
+        "<td class=\"id\">11</td>\\s*<td>Configuration",
+        "(?s)<section id=\"checklist\">(?:(?!</section>).)*?(?:<tr[^>]*>(?:(?!</tr>).)*?class=\"pill (?:open|done)\">(?:done|open|not started|not applicable)<(?:(?!</tr>).)*</tr>\\s*){11}"
+      ],
+      "content_not_match": [
+        "(?s)<section id=\"checklist\">(?:(?!</section>).)*<td class=\"id\">1[2-9]</td>",
+        "(?i)build order",
+        "REVIEW\\.md"
+      ]
+    },
+    {
       "name": "every choice is a row marked proposed, with its basis",
       "type": "published",
       "content_match": [
